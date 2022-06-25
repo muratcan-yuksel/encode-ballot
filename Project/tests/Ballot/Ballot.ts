@@ -87,19 +87,6 @@ describe("Ballot", function () {
   });
 
   describe("when the voter interact with the vote function in the contract", function () {
-    it("cannot vote with zero weight", async function () {
-      await expect(
-        ballotContract.connect(accounts[1]).vote(1)
-      ).to.be.revertedWith("Has no right to vote");
-    });
-
-    it("cannot vote twice", async function () {
-      await ballotContract.connect(accounts[0]).vote(1);
-      await expect(
-        ballotContract.connect(accounts[0]).vote(1)
-      ).to.be.revertedWith("Already voted.");
-    });
-
     it("successfully vote", async function () {
       const voteCountBefore = (await ballotContract.proposals(1)).voteCount;
       await ballotContract.connect(accounts[0]).vote(1);
@@ -115,6 +102,65 @@ describe("Ballot", function () {
   });
 
   describe("when the voter interact with the delegate function in the contract", function () {
+    it("Successfully delegate to a voter who has not voted", async function () {
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accounts[1].address);
+
+      const voterWeightBefore = (
+        await ballotContract.voters(accounts[1].address)
+      ).weight;
+
+      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
+
+      const voterWeightAfter = (
+        await ballotContract.voters(accounts[1].address)
+      ).weight;
+
+      expect(voterWeightAfter.toNumber()).to.gt(voterWeightBefore.toNumber());
+    });
+
+    it("Successfully delegate to a voter who has voted", async function () {
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accounts[1].address);
+
+      await ballotContract.connect(accounts[1]).vote(1);
+
+      const voterCounttBefore = (await ballotContract.proposals(1)).voteCount;
+
+      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
+
+      const voterCounttAfter = (await ballotContract.proposals(1)).voteCount;
+
+      expect(voterCounttAfter.toNumber()).to.gt(voterCounttBefore.toNumber());
+    });
+  });
+
+  describe("when the an attacker interact with the giveRightToVote function in the contract", function () {
+    it("cannot give right to vote ", async function () {
+      await expect(
+        ballotContract.connect(accounts[1]).giveRightToVote(accounts[2].address)
+      ).to.be.revertedWith("Only chairperson can give right to vote.");
+    });
+  });
+
+  describe("when the an attacker interact with the vote function in the contract", function () {
+    it("cannot vote with zero weight", async function () {
+      await expect(
+        ballotContract.connect(accounts[1]).vote(1)
+      ).to.be.revertedWith("Has no right to vote");
+    });
+
+    it("cannot vote twice", async function () {
+      await ballotContract.connect(accounts[0]).vote(1);
+      await expect(
+        ballotContract.connect(accounts[0]).vote(1)
+      ).to.be.revertedWith("Already voted.");
+    });
+  });
+
+  describe("when the an attacker interact with the delegate function in the contract", function () {
     it("cannot delegate after voting", async function () {
       await ballotContract.connect(accounts[0]).vote(1);
       await expect(
@@ -151,62 +197,7 @@ describe("Ballot", function () {
         ballotContract.connect(accounts[0]).delegate(accounts[1].address)
       ).to.be.revertedWith("");
     });
-
-    it("Successfully delegate to a voter who has not voted", async function () {
-      await ballotContract
-        .connect(accounts[0])
-        .giveRightToVote(accounts[1].address);
-
-      const voterWeightBefore = (
-        await ballotContract.voters(accounts[1].address)
-      ).weight;
-
-      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
-
-      const voterWeightAfter = (
-        await ballotContract.voters(accounts[1].address)
-      ).weight;
-
-      expect(voterWeightAfter.toNumber()).to.gt(voterWeightBefore.toNumber());
-    });
-
-    it("Successfully delegate to a voter who has voted", async function () {
-      await ballotContract
-        .connect(accounts[0])
-        .giveRightToVote(accounts[1].address);
-
-      await ballotContract.connect(accounts[1]).vote(1);
-
-      const voterCounttBefore = (await ballotContract.proposals(1)).voteCount;
-
-      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
-
-      const voterCounttAfter = (await ballotContract.proposals(1)).voteCount;
-
-      expect(voterCounttAfter.toNumber()).to.gt(voterCounttBefore.toNumber());
-    });
   });
-
-  // describe("when the an attacker interact with the giveRightToVote function in the contract", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
-
-  // describe("when the an attacker interact with the vote function in the contract", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
-
-  // describe("when the an attacker interact with the delegate function in the contract", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
 
   // describe("when someone interact with the winningProposal function before any votes are cast", function () {
   //   // TODO
