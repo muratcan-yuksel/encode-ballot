@@ -199,19 +199,24 @@ describe("Ballot", function () {
     });
   });
 
-  // describe("when someone interact with the winningProposal function before any votes are cast", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
+  describe("when someone interact with the winningProposal function before any votes are cast", function () {
+    it("before any votes are cast", async function () {
+      await ballotContract.winningProposal();
+      const proposal1 = await ballotContract.proposals(0);
+      const proposal2 = await ballotContract.proposals(1);
+      const proposal3 = await ballotContract.proposals(2);
+      expect(proposal1.voteCount.toNumber()).to.equal(0);
+      expect(proposal2.voteCount.toNumber()).to.equal(0);
+      expect(proposal3.voteCount.toNumber()).to.equal(0);
+    });
+  });
 
-  // describe("when someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
+  describe("when someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
+    it("after one vote is cast for the first proposal", async function () {
+      await ballotContract.connect(accounts[0]).vote(0);
+      expect((await ballotContract.winningProposal()).toNumber()).to.equal(0);
+    });
+  });
 
   // describe("when someone interact with the winnerName function before any votes are cast", function () {
   //   // TODO
