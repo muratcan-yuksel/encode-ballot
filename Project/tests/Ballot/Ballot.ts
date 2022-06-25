@@ -87,19 +87,6 @@ describe("Ballot", function () {
   });
 
   describe("when the voter interact with the vote function in the contract", function () {
-    it("successfully vote", async function () {
-      const voteCountBefore = (await ballotContract.proposals(1)).voteCount;
-      await ballotContract.connect(accounts[0]).vote(1);
-      const voteCountAfter = (await ballotContract.proposals(1)).voteCount;
-      const voter = await ballotContract.voters(accounts[0].address);
-
-      expect(voteCountAfter.toNumber() - voteCountBefore.toNumber()).to.eq(
-        voter.weight.toNumber()
-      );
-      expect(voter.voted).to.equal(true);
-      expect(voter.vote.toNumber()).to.equal(1);
-    });
-
     it("cannot vote with zero weight", async function () {
       await expect(
         ballotContract.connect(accounts[1]).vote(1)
@@ -111,6 +98,19 @@ describe("Ballot", function () {
       await expect(
         ballotContract.connect(accounts[0]).vote(1)
       ).to.be.revertedWith("Already voted.");
+    });
+
+    it("successfully vote", async function () {
+      const voteCountBefore = (await ballotContract.proposals(1)).voteCount;
+      await ballotContract.connect(accounts[0]).vote(1);
+      const voteCountAfter = (await ballotContract.proposals(1)).voteCount;
+      const voter = await ballotContract.voters(accounts[0].address);
+
+      expect(voteCountAfter.toNumber() - voteCountBefore.toNumber()).to.eq(
+        voter.weight.toNumber()
+      );
+      expect(voter.voted).to.equal(true);
+      expect(voter.vote.toNumber()).to.equal(1);
     });
   });
 
@@ -150,6 +150,40 @@ describe("Ballot", function () {
       await expect(
         ballotContract.connect(accounts[0]).delegate(accounts[1].address)
       ).to.be.revertedWith("");
+    });
+
+    it("Successfully delegate to a voter who has not voted", async function () {
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accounts[1].address);
+
+      const voterWeightBefore = (
+        await ballotContract.voters(accounts[1].address)
+      ).weight;
+
+      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
+
+      const voterWeightAfter = (
+        await ballotContract.voters(accounts[1].address)
+      ).weight;
+
+      expect(voterWeightAfter.toNumber()).to.gt(voterWeightBefore.toNumber());
+    });
+
+    it("Successfully delegate to a voter who has voted", async function () {
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accounts[1].address);
+
+      await ballotContract.connect(accounts[1]).vote(1);
+
+      const voterCounttBefore = (await ballotContract.proposals(1)).voteCount;
+
+      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
+
+      const voterCounttAfter = (await ballotContract.proposals(1)).voteCount;
+
+      expect(voterCounttAfter.toNumber()).to.gt(voterCounttBefore.toNumber());
     });
   });
 
