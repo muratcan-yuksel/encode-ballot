@@ -86,19 +86,48 @@ describe("Ballot", function () {
     });
   });
 
-  // describe("when the voter interact with the vote function in the contract", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
+  describe("when the voter interact with the vote function in the contract", function () {
+    it("successfully vote", async function () {
+      const voteCountBefore = (await ballotContract.proposals(1)).voteCount;
+      await ballotContract.connect(accounts[0]).vote(1);
+      const voteCountAfter = (await ballotContract.proposals(1)).voteCount;
+      const voter = await ballotContract.voters(accounts[0].address);
 
-  // describe("when the voter interact with the delegate function in the contract", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
+      expect(voteCountAfter.toNumber() - voteCountBefore.toNumber()).to.eq(
+        voter.weight.toNumber()
+      );
+      expect(voter.voted).to.equal(true);
+      expect(voter.vote.toNumber()).to.equal(1);
+    });
+
+    it("cannot vote with zero weight", async function () {
+      await expect(
+        ballotContract.connect(accounts[1]).vote(1)
+      ).to.be.revertedWith("Has no right to vote");
+    });
+
+    it("cannot vote twice", async function () {
+      await ballotContract.connect(accounts[0]).vote(1);
+      await expect(
+        ballotContract.connect(accounts[0]).vote(1)
+      ).to.be.revertedWith("Already voted.");
+    });
+  });
+
+  describe("when the voter interact with the delegate function in the contract", function () {
+    it("cannot delegate after voting", async function () {
+      await ballotContract.connect(accounts[0]).vote(1);
+      await expect(
+        ballotContract.connect(accounts[0]).delegate(accounts[1].address)
+      ).to.be.revertedWith("You already voted.");
+    });
+
+    it("cannot delegate to self", async function () {
+      await expect(
+        ballotContract.connect(accounts[0]).delegate(accounts[0].address)
+      ).to.be.revertedWith("Self-delegation is disallowed.");
+    });
+  });
 
   // describe("when the an attacker interact with the giveRightToVote function in the contract", function () {
   //   // TODO
