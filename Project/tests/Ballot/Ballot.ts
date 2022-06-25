@@ -127,6 +127,30 @@ describe("Ballot", function () {
         ballotContract.connect(accounts[0]).delegate(accounts[0].address)
       ).to.be.revertedWith("Self-delegation is disallowed.");
     });
+
+    it("cannot participate in loop delegation", async function () {
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accounts[1].address);
+
+      await ballotContract
+        .connect(accounts[0])
+        .giveRightToVote(accounts[2].address);
+
+      await ballotContract.connect(accounts[0]).delegate(accounts[1].address);
+
+      await ballotContract.connect(accounts[1]).delegate(accounts[2].address);
+
+      await expect(
+        ballotContract.connect(accounts[2]).delegate(accounts[0].address)
+      ).to.be.revertedWith("Found loop in delegation.");
+    });
+
+    it("cannot delegate to wallet that cannot vote", async function () {
+      await expect(
+        ballotContract.connect(accounts[0]).delegate(accounts[1].address)
+      ).to.be.revertedWith("");
+    });
   });
 
   // describe("when the an attacker interact with the giveRightToVote function in the contract", function () {
