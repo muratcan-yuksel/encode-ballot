@@ -86,73 +86,73 @@ describe("Ballot", function () {
     });
   });
 
-  describe("when the voter interact with the vote function in the contract", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when the voter interact with the vote function in the contract", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when the voter interact with the delegate function in the contract", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when the voter interact with the delegate function in the contract", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when the an attacker interact with the giveRightToVote function in the contract", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when the an attacker interact with the giveRightToVote function in the contract", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when the an attacker interact with the vote function in the contract", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when the an attacker interact with the vote function in the contract", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when the an attacker interact with the delegate function in the contract", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when the an attacker interact with the delegate function in the contract", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when someone interact with the winningProposal function before any votes are cast", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when someone interact with the winningProposal function before any votes are cast", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when someone interact with the winnerName function before any votes are cast", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when someone interact with the winnerName function before any votes are cast", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when someone interact with the winnerName function after one vote is cast for the first proposal", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when someone interact with the winnerName function after one vote is cast for the first proposal", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 
-  describe("when someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
-    });
-  });
+  // describe("when someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {
+  //   // TODO
+  //   it("is not implemented", async function () {
+  //     throw new Error("Not implemented");
+  //   });
+  // });
 });
