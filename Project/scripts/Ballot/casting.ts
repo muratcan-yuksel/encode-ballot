@@ -12,7 +12,7 @@ const EXPOSED_KEY =
 async function main() {
   const wallet =
     process.env.MNEMONIC && process.env.MNEMONIC.length > 0
-      ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
+      ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC, "m/44'/60'/0'/0/1")
       : new ethers.Wallet(process.env.PRIVATE_KEY ?? EXPOSED_KEY);
   console.log(`Using address ${wallet.address}`);
   const provider = ethers.providers.getDefaultProvider("goerli");
@@ -25,23 +25,24 @@ async function main() {
   }
   if (process.argv.length < 3) throw new Error("Ballot address missing");
   const ballotAddress = process.argv[2];
-  if (process.argv.length < 4) throw new Error("Voter address missing");
-  const voterAddress = process.argv[3];
+
   console.log(
     `Attaching ballot contract interface to address ${ballotAddress}`
   );
+
   const ballotContract: Ballot = new Contract(
     ballotAddress,
     ballotJson.abi,
     signer
   ) as Ballot;
-  const chairpersonAddress = await ballotContract.chairperson();
-  if (chairpersonAddress !== signer.address)
-    throw new Error("Caller is not the chairperson for this contract");
-  console.log(`Giving right to vote to ${voterAddress}`);
-  const tx = await ballotContract.giveRightToVote(voterAddress);
+
+  const tx = await ballotContract.vote(0);
+
   console.log("Awaiting confirmations");
+
   await tx.wait();
+
+  console.log("voted successfully");
   console.log(`Transaction completed. Hash: ${tx.hash}`);
 }
 

@@ -217,25 +217,4 @@ describe("Ballot", function () {
       expect((await ballotContract.winningProposal()).toNumber()).to.equal(0);
     });
   });
-
-  // describe("when someone interact with the winnerName function before any votes are cast", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
-
-  // describe("when someone interact with the winnerName function after one vote is cast for the first proposal", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
-
-  // describe("when someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {
-  //   // TODO
-  //   it("is not implemented", async function () {
-  //     throw new Error("Not implemented");
-  //   });
-  // });
 });
