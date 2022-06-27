@@ -1,3 +1,7 @@
+## contributors
+
+Murat Can Yüksel, Furkan Eşref Yazıcı, Damilola Debel , Adewumi Ifeoluwa, Azat Sayan
+
 ## Etherscan
 
 https://goerli.etherscan.io/address/0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
