@@ -1,136 +1,70 @@
-# Lesson 4 - Tests and Scripts
-## Writing unit tests for Ballot.sol
-* More on Ether.js functions and utilities
-* Bytes32 and Strings conversion
-* Helper functions inside test scripts
-* Unit tests structure and nested tests
-### Code reference for tests
-<pre><code>import { expect } from "chai";
-import { ethers } from "hardhat";
-// eslint-disable-next-line node/no-missing-import
-import { Ballot } from "../../typechain";
+## Etherscan
 
-const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
+https://goerli.etherscan.io/address/0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
 
-function convertStringArrayToBytes32(array: string[]) {
-  const bytes32Array = [];
-  for (let index = 0; index < array.length; index++) {
-    bytes32Array.push(ethers.utils.formatBytes32String(array[index]));
-  }
-  return bytes32Array;
-}
+## Using Scripts
 
-describe("Ballot", function () {
-  let ballotContract: Ballot;
+Contract deployment on goerli testnet
 
-  this.beforeEach(async function () {
-    const ballotFactory = await ethers.getContractFactory("Ballot");
-    ballotContract = await ballotFactory.deploy(
-      convertStringArrayToBytes32(PROPOSALS)
-    );
-    await ballotContract.deployed();
-  });
+Contract address: 0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
 
-  describe("when the contract is deployed", function () {
-    it("has the provided proposals", async function () {
-      for (let index = 0; index < PROPOSALS.length; index++) {
-        const proposal = await ballotContract.proposals(index);
-        expect(ethers.utils.parseBytes32String(proposal.name)).to.eq(
-          PROPOSALS[index]
-        );
-      }
-    });
+Tx hash for contract deployment: 0xebc8806397b149cb7a51a76b11f5ba163f86bc6571eedca7a4bc5d50cceaf90d
 
-    it("has zero votes for all proposals", async function () {});
-    it("sets the deployer address as chairperson", async function () {});
-    it("sets the voting weight for the chairperson as 1", async function () {});
-  });
+{Signer address: 0x60eec8D76539B3c412f94554649a492cBB8AB433}
 
-  describe("when the chairperson interacts with the giveRightToVote function in the contract", function () {
-    it("gives right to vote for another address", async function () {});
-    it("can not give right to vote for someone that has voted", async function () {});
-    it("can not give right to vote for someone that has already voting rights", async function () {});
-  });
+Console Output: ==========================
+Wallet balance 0.07163178770107449
+Deploying Ballot contract
+Proposals:
+Proposal N. 1: proposal0
+Proposal N. 2: proposal1
+Proposal N. 3: proposal2
+Awaiting confirmations
+Completed
+Contract deployed at 0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
 
-  describe("when the voter interact with the vote function in the contract", function () {});
+Assign voting right to this address 0x2EFA609753CCc883e2D8B559b60E89EEEeB2F657
 
-  describe("when the voter interact with the delegate function in the contract", function () {});
+Tx hash: 0x15f07cea6d96100626f4f1e363677742beb8f6baa40b36a57f0366132a69eb42
 
-  describe("when the an attacker interact with the giveRightToVote function in the contract", function () {});
+{Signer address: 0x60eec8D76539B3c412f94554649a492cBB8AB433}
 
-  describe("when the an attacker interact with the vote function in the contract", function () {});
+Console Output ==========================
+Wallet balance 0.06994513369207901
+Attaching ballot contract interface to address 0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
+Giving right to vote to 0x2EFA609753CCc883e2D8B559b60E89EEEeB2F657
+Awaiting confirmations
+Transaction completed. Hash: 0x15f07cea6d96100626f4f1e363677742beb8f6baa40b36a57f0366132a69eb42
 
-  describe("when the an attacker interact with the delegate function in the contract", function () {});
+Assign voting right to this address 0x149B4E7199957905ef6E61bdbCD78C1331a59D3F
 
-  describe("when someone interact with the winningProposal function before any votes are cast", function () {});
+Tx hash: 0x6790dec7068ed6bfc12ba25080f99a1e75ab47ab9890e6028cbddcbb80dfa60b
 
-  describe("when someone interact with the winningProposal function after one vote is cast for the first proposal", function () {});
+{Signer address: 0x60eec8D76539B3c412f94554649a492cBB8AB433}
 
-  describe("when someone interact with the winnerName function before any votes are cast", function () {});
+Console Output ==========================
+Wallet balance 0.06987214819168976
+Attaching ballot contract interface to address 0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
+Giving right to vote to 0x149B4E7199957905ef6E61bdbCD78C1331a59D3F
+Awaiting confirmations
+Transaction completed. Hash: 0x6790dec7068ed6bfc12ba25080f99a1e75ab47ab9890e6028cbddcbb80dfa60b
 
-  describe("when someone interact with the winnerName function after one vote is cast for the first proposal", function () {});
+Casting vote from 0x2EFA609753CCc883e2D8B559b60E89EEEeB2F657
 
-  describe("when someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {});
-});</code></pre>
-## Using scripts to automate operations
-* Running a script with yarn and node, ts-node and/or hardhat
-* Ballot deployment  script
-* Passing arguments
-* Passing variables to the deployment script
-* Environment files
-* Providers
-* Connecting to a testnet with a RPC Provider
-* Running scripts on chain
-* Script for giving voting rights to a given address
-* Dealing with transactions in scripts
-### References
-https://www.typescripttutorial.net/typescript-tutorial/typescript-hello-world/
+Tx hash: 0xfebdd2ad091ce21d89d25ca9f636b192c6d55f70b524b1bfdee8b9183458f0b4
 
-https://nodejs.org/docs/latest/api/process.html#processargv
+Console Output ==========================
+Wallet balance 0.019685119999118338
+Attaching ballot contract interface to address 0x8Bb1ae56dd80F7E6C6Ca007632d3DcbC20d34393
+Awaiting confirmations
+voted successfully
+Transaction completed. Hash: 0xfebdd2ad091ce21d89d25ca9f636b192c6d55f70b524b1bfdee8b9183458f0b4
 
-https://docs.ethers.io/v5/api/providers/
+Delegating vote from 0x60eec8D76539B3c412f94554649a492cBB8AB433 to 0x149B4E7199957905ef6E61bdbCD78C1331a59D3F
 
-https://docs.ethers.io/v5/api/contract/contract-factory/
+Tx hash: 0x1bbe7dd6cdbd07e6d79e147b6a650738c6b038bbef75f3f54cb34a86c69d98e0
 
-<pre><code>import { ethers } from "hardhat";
-
-const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
-
-async function main() {
-  console.log("Deploying Ballot contract");
-  console.log("Proposals: ");
-  PROPOSALS.forEach((element, index) => {
-    console.log(`Proposal N. ${index + 1}: ${element}`);
-  });
-  // TODO
-}
-
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});</code></pre>
-### Running scripts
-```
-yarn run hardhat .\scripts\Ballot\deployment.ts
-```
-### Running scripts with arguments
-```
-yarn run ts-node --files .\scripts\Ballot\deployment.ts "arg1" "arg2" "arg3
-```
-# Homework
-* Read the references
-* Finish covering other operations with scripts
-
-# Weekend Project
-* Form groups of 3 to 5 students
-* Structure scripts to
-  * Deploy
-  * Query proposals
-  * Give vote right passing an address as input
-  * Cast a vote to a ballot passing contract address and proposal as input and using the wallet in environment
-  * Delegate my vote passing  user address as input and using the wallet in environment
-  * Query voting result and print to console
-* Publish the project in Github
-* Run the scripts with a set of proposals, cast and delegate votes and inspect results
-* Write a report detailing the addresses, transaction hashes, description of the operation script being executed and console output from script execution for each step (Deployment, giving voting rights, casting/delegating and querying results).
-* (Extra) Use TDD methodology
+Console Output ==========================
+Awaiting confirmations
+delegating vote completed
+Transaction completed. Hash: 0x1bbe7dd6cdbd07e6d79e147b6a650738c6b038bbef75f3f54cb34a86c69d98e0
